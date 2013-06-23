@@ -1,6 +1,6 @@
 <?php
 
-namespace krakerag\ExperianQas\Engine;
+namespace krakerag\ExperianQas\PostcodeSearch;
 
 /**
  * Class Engine
