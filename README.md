@@ -5,7 +5,7 @@ This library is designed to provide a class interface to the Experian QAS postco
 
 It is built with the SOAP Pro Web product in mind and tested with GBR datasets primarily.
 
-Experian QAS can be found via it's website at http://www.qas-experian.com.au/ or http://www.qas.co.uk/
+Experian QAS can be found via http://www.qas-experian.com.au/ or http://www.qas.co.uk/
 
 Installation
 ------------
@@ -18,13 +18,15 @@ Usage
 ```php
 
 use \krakerag\ExperianQas\PostcodeSearch\PostcodeSearch;
-use \krakerag\ExperianQas\Engine\Engine;
+use \krakerag\ExperianQas\PostcodeSearch\Engine;
 
-$wsdl = 'http://blah.com/QAPro/Pro.wsdl';
+$wsdl = 'http://yourserver:2021/proweb.wsdl';
 
 $engine = new Engine;
 $search = new PostcodeSearch(new \Psr\Log\NullLogger(), $wsdl);
+$search->setEngine($engine);
 $search->setPostcode('SW40QB');
+
 $results = $search->find();
 
 var_dump($results); // etc

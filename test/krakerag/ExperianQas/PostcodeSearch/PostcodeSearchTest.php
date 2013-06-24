@@ -2,7 +2,7 @@
 
 namespace krakerag\ExperianQas\PostcodeSearch;
 
-class EngineTest extends \PHPUnit_Framework_TestCase {
+class PostcodeSearchTest extends \PHPUnit_Framework_TestCase {
 
     public function testClassInstantiation()
     {
