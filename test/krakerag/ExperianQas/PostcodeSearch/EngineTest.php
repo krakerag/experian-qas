@@ -1,6 +1,6 @@
 <?php
 
-namespace krakerag\ExperianQas\Engine;
+namespace krakerag\ExperianQas\PostcodeSearch;
 
 class EngineTest extends \PHPUnit_Framework_TestCase {
 
