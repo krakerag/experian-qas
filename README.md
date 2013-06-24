@@ -1,6 +1,8 @@
 experian-qas - PHP library to interface with Experian QAS
 ==============================
 
+[![Build Status](https://secure.travis-ci.org/krakerag/experian-qas.png)](http://travis-ci.org/krakerag/experian-qas)
+
 This library is designed to provide a class interface to the Experian QAS postcode search product.
 
 It is built with the SOAP Pro Web product in mind and tested with GBR datasets primarily.
