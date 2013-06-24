@@ -35,6 +35,19 @@ var_dump($results); // etc
 
 ```
 
+The engine object ships with sensible settings for working with UK postcode searches.
+
+You can tailor this in any fashion that matches varibles designed to work with the WSDL, for example:
+
+```php
+
+$engine = new Engine;
+$engine->setEngine('Keyfinder');
+$engine->setIntensity('Close');
+// etc
+
+```
+
 About
 =====
 
