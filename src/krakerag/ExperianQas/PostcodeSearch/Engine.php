@@ -36,14 +36,14 @@ class Engine {
     /**
      * @var string
      */
-    private $_ = 'Singleline';
+    private $engine = 'Singleline';
 
     /**
      * @param string $engine
      */
     public function setEngine($engine)
     {
-        $this->_ = $engine;
+        $this->engine = $engine;
     }
 
     /**
@@ -51,7 +51,7 @@ class Engine {
      */
     public function getEngine()
     {
-        return $this->_;
+        return $this->engine;
     }
 
     /**

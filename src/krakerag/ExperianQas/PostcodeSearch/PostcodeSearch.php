@@ -60,26 +60,55 @@ class PostcodeSearch {
         try {
 
             $client = $this->soapClient;
-            $engine = new \SoapVar($this->engine, SOAP_ENC_OBJECT, 'Engine');
-            if (method_exists($client, 'QASearch')) {
-                $results = $client->QASearch(
-                    array(
-                        'Country' => $this->country,
-                        'Engine' => $engine,
-                        'Search' => $this->postcode,
-                    )
-                );
 
-                var_dump($results);
+            $results = $client->DoSearch(
+                array(
+                    'Country' => $this->country,
+                    'Engine' => array(
+                        '_' => $this->engine->getEngine(),
+                        'Flatten' => $this->engine->getFlatten(),
+                        'Intensity' => $this->engine->getIntensity(),
+                        'PromptSet' => $this->engine->getPromptSet(),
+                        'Threshold' => $this->engine->getThreshold(),
+                        'Timeout' => $this->engine->getTimeout(),
+                    ),
+                    'Search' => $this->postcode,
+                )
+            );
 
-                return true;
-            } else {
-                throw new \ErrorException('QASearch does not exist as a method against the WSDL provided');
+            // Parse results and return ArrayIterator set
+            foreach ($results->QAPicklist as $result) {
+                // Only valid results are a single object or an array of objects
+                if (is_object($result) || is_array($result)) {
+                    return $this->parseResult($result);
+                }
             }
 
         } catch (\SoapFault $fault) {
-            throw new Exception('Call to QASearch failed with an exception: '.$fault->getMessage());
+
+            $this->logger->log('SoapFault thrown when attempting to fetch postcode data');
+            $this->logger->log('Last request: '.$client->__getLastRequest());
+            $this->logger->log('Last response: '.$client->__getLastResponse());
+            throw new \Exception('Call to QASearch failed with an exception: '.$fault->getMessage());
         }
+    }
+
+    private function parseResult($result)
+    {
+        $parsedResults = array();
+
+        if (is_object($result) && $result->Moniker == "" && $result->Postcode == "") {
+            return $parsedResults;
+        }
+
+        if (is_array($result) && count($result) > 0) {
+            foreach($result as $address) {
+                $parsedResultsItem = (array)$address;
+                $parsedResults[] = $parsedResultsItem; 
+            }
+        }
+
+        return $parsedResults;
     }
 
     /**
@@ -88,9 +117,9 @@ class PostcodeSearch {
     private function generateSoapClient()
     {
         $client = new \SoapClient($this->wsdl, array(
-            'encoding'     => 'UTF-8',
+            'trace' => 1,
+            'encoding' => 'UTF-8',
             'soap_version' => SOAP_1_1,
-            'classmap'     => array('Engine' => 'Engine')
         ));
 
         $this->soapClient = $client;
