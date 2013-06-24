@@ -12,7 +12,7 @@ Experian QAS can be found via http://www.qas-experian.com.au/ or http://www.qas.
 Installation
 ------------
 
-Install via composer by installing this repo. The library is not ready for packagist as yet.
+Install via composer by installing this repo or via Packagist - https://packagist.org/packages/krakerag/experian-qas
 
 Usage
 -----
