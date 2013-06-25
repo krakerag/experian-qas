@@ -24,19 +24,9 @@ class PostcodeSearch {
     private $wsdl = null;
 
     /**
-     * @var string
-     */
-    private $country = 'GBR';
-
-    /**
      * @var null
      */
     private $engine = null;
-
-    /**
-     * @var null
-     */
-    private $postcode = null;
 
     /**
      * @param \Psr\Log\LoggerInterface $logger
@@ -47,10 +37,26 @@ class PostcodeSearch {
         $this->wsdl = $wsdl;
     }
 
-    public function find()
+    /**
+     * @param $country
+     * @param $postcode
+     * @return array
+     * @throws \InvalidArgumentException
+     * @throws \Exception
+     */
+    public function find($country, $postcode)
     {
-        if (is_null($this->postcode)) {
+        if (is_null($postcode)) {
             throw new \InvalidArgumentException('Postcode must be set');
+        }
+        if (is_null($country)) {
+            throw new \InvalidArgumentException('Country must be set');
+        }
+        if (strlen($country) != 3) {
+            throw new \InvalidArgumentException('Country must be 3 characters');
+        }
+        if (is_null($this->engine)) {
+            throw new \InvalidArgumentException('Engine must be an instance of the Engine object');
         }
 
         if (is_null($this->soapClient)) {
@@ -59,20 +65,24 @@ class PostcodeSearch {
 
         try {
 
+            /** @var \SoapClient $client */
             $client = $this->soapClient;
+            /** @var Engine $engine */
+            $engine = $this->engine;
 
-            $results = $client->DoSearch(
+            /** @var mixed $results */
+            $results = $client->__soapCall('DoSearch',
                 array(
-                    'Country' => $this->country,
+                    'Country' => $country,
                     'Engine' => array(
-                        '_' => $this->engine->getEngine(),
-                        'Flatten' => $this->engine->getFlatten(),
-                        'Intensity' => $this->engine->getIntensity(),
-                        'PromptSet' => $this->engine->getPromptSet(),
-                        'Threshold' => $this->engine->getThreshold(),
-                        'Timeout' => $this->engine->getTimeout(),
+                        '_' => $engine->getEngine(),
+                        'Flatten' => $engine->getFlatten(),
+                        'Intensity' => $engine->getIntensity(),
+                        'PromptSet' => $engine->getPromptSet(),
+                        'Threshold' => $engine->getThreshold(),
+                        'Timeout' => $engine->getTimeout(),
                     ),
-                    'Search' => $this->postcode,
+                    'Search' => $postcode,
                 )
             );
 
@@ -86,13 +96,17 @@ class PostcodeSearch {
 
         } catch (\SoapFault $fault) {
 
-            $this->logger->log('SoapFault thrown when attempting to fetch postcode data');
-            $this->logger->log('Last request: '.$client->__getLastRequest());
-            $this->logger->log('Last response: '.$client->__getLastResponse());
+            $this->logger->error('SoapFault thrown when attempting to fetch postcode data');
+            $this->logger->error('Last request: '.$client->__getLastRequest());
+            $this->logger->error('Last response: '.$client->__getLastResponse());
             throw new \Exception('Call to QASearch failed with an exception: '.$fault->getMessage());
         }
     }
 
+    /**
+     * @param $result
+     * @return array
+     */
     private function parseResult($result)
     {
         $parsedResults = array();
@@ -126,22 +140,6 @@ class PostcodeSearch {
     }
 
     /**
-     * @param string $country
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
      * @param null $engine
      */
     public function setEngine($engine)
@@ -171,22 +169,6 @@ class PostcodeSearch {
     public function getLogger()
     {
         return $this->logger;
-    }
-
-    /**
-     * @param null $postcode
-     */
-    public function setPostcode($postcode)
-    {
-        $this->postcode = $postcode;
-    }
-
-    /**
-     * @return null
-     */
-    public function getPostcode()
-    {
-        return $this->postcode;
     }
 
     /**
