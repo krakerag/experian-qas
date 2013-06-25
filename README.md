@@ -24,12 +24,11 @@ use \krakerag\ExperianQas\PostcodeSearch\Engine;
 
 $wsdl = 'http://yourserver:2021/proweb.wsdl';
 
-$engine = new Engine;
-$search = new PostcodeSearch(new \Psr\Log\NullLogger(), $wsdl);
+$engine = new Engine();
+$search = new PostcodeSearch(new \Psr\Log\NullLogger(), $wsdl); // Or a proper logger in place
 $search->setEngine($engine);
-$search->setPostcode('SW40QB');
 
-$results = $search->find();
+$results = $search->find('GBR','SW40QB');
 
 var_dump($results); // etc
 
