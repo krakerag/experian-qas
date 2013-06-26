@@ -71,7 +71,7 @@ class PostcodeSearch {
             $engine = $this->engine;
 
             /** @var mixed $results */
-            $results = $client->__soapCall('DoSearch',
+            $results = $client->DoSearch(
                 array(
                     'Country' => $country,
                     'Engine' => array(
