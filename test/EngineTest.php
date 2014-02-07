@@ -4,14 +4,10 @@ namespace krakerag\ExperianQas\PostcodeSearch;
 
 class EngineTest extends \PHPUnit_Framework_TestCase {
 
-    public function testClassInstantiation()
-    {
-        $engine = new Engine();
-    }
-
     public function testSetGetEngine()
     {
         $engine = new Engine();
+
         $this->assertEquals('true', $engine->getFlatten());
         $this->assertEquals('Exact', $engine->getIntensity());
         $this->assertEquals('Optimal', $engine->getPromptSet());

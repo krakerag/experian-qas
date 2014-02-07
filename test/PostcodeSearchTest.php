@@ -7,11 +7,6 @@ use krakerag\ExperianQas\PostcodeSearch\PostcodeSearch;
 
 class PostcodeSearchTest extends \PHPUnit_Framework_TestCase {
 
-    public function testClassInstantiation()
-    {
-        $search = new PostcodeSearch(new \Psr\Log\NullLogger(), 'http://www.test.org/?wsdl');
-    }
-
     public function testSoapCall()
     {
         $wsdl = __DIR__.'/default.wsdl';
@@ -20,7 +15,7 @@ class PostcodeSearchTest extends \PHPUnit_Framework_TestCase {
         $search = new PostcodeSearch(new \Psr\Log\NullLogger(), $wsdl);
         $search->setEngine($engine);
         try {
-            $results = $search->find('GBR','SW40QB');
+            $search->find('GBR','SW40QB');
             $this->fail('Should fail with can\'t connect to host');
 
         } catch (\Exception $exception) {
