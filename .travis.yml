@@ -1,6 +1,10 @@
 language: php
 php:
+ - 5.5
  - 5.4
  - 5.3
-before_script: composer --dev install
+before_script:
+ - composer self-update
+ - composer --version
+ - COMPOSER_ROOT_VERSION=dev-master composer --prefer-source --dev install
 script: vendor/bin/phpunit
