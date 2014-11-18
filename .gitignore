@@ -1,4 +1,5 @@
-test.php
 composer.lock
 /vendor/
 /.idea/
+/build/
+.DS_Store

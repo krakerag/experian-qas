@@ -10,14 +10,14 @@
     <!-- Test Locations -->
     <testsuites>
         <testsuite>
-            <directory>test/krakerag/ExperianQas</directory>
+            <directory>test</directory>
         </testsuite>
     </testsuites>
 
     <!-- Coverage Filtering -->
     <filter>
         <whitelist>
-            <directory suffix=".php">src/krakerag/ExperianQas</directory>
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
 

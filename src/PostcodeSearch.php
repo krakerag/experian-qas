@@ -94,6 +94,9 @@ class PostcodeSearch {
                 }
             }
 
+            // If we have no results we return null
+            return null;
+
         } catch (\SoapFault $fault) {
 
             $this->logger->error('SoapFault thrown when attempting to fetch postcode data');
