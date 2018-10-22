@@ -1,0 +1,11 @@
+version: 2
+dependencies:
+- type: php
+  path: /
+  settings:
+    # options for composer install/update/require
+    composer_options: "--ignore-platform-reqs"
+    branch_prefix: support/
+    github_base_branch: develop
+    github_assignees:
+    - krakerag
